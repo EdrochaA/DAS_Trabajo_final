@@ -36,11 +36,25 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // Para mostrar logs en red (opcional pero útil)
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    // API de OSM para android
+    implementation ('org.osmdroid:osmdroid-android:6.1.16'){
+        exclude group: 'com.j256.ormlite', module: 'ormlite-core'
+    }
+    implementation ('org.osmdroid:osmdroid-wms:6.1.16'){
+        exclude group: 'com.j256.ormlite', module: 'ormlite-core'
+    }
+    implementation ('org.osmdroid:osmdroid-mapsforge:6.1.16'){
+        exclude group: 'com.j256.ormlite', module: 'ormlite-core'
+    }
+    implementation ('org.osmdroid:osmdroid-geopackage:6.1.16') {
+        exclude group: 'com.j256.ormlite', module: 'ormlite-core'
+    }
 
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.play.services.location
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

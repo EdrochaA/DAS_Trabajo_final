@@ -35,21 +35,35 @@ public class MainMenuActivity extends AppCompatActivity {
                 Toast.makeText(this, "Universidad seleccionada", Toast.LENGTH_SHORT).show()
         );
 
-        cardBike.setOnClickListener(v ->
-                Toast.makeText(this, "Bicicleta seleccionada", Toast.LENGTH_SHORT).show()
-        );
 
-        cardTram.setOnClickListener(v ->
-                Toast.makeText(this, "Tranvía seleccionado", Toast.LENGTH_SHORT).show()
-        );
+        cardBike.setOnClickListener(v -> {
+            Toast.makeText(this, "Bicicleta seleccionada", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TransporteActivity.class);
+            intent.putExtra("transportType", "bike");
+            startActivity(intent);
+        });
 
-        cardBus.setOnClickListener(v ->
-                Toast.makeText(this, "Autobús seleccionado", Toast.LENGTH_SHORT).show()
-        );
+        cardTram.setOnClickListener(v -> {
+            Toast.makeText(this, "Tranvía seleccionado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TransporteActivity.class);
+            intent.putExtra("transportType", "tram");
+            startActivity(intent);
+        });
 
-        cardWalk.setOnClickListener(v ->
-                Toast.makeText(this, "A pie seleccionado", Toast.LENGTH_SHORT).show()
-        );
+        cardBus.setOnClickListener(v -> {
+            Toast.makeText(this, "Autobús seleccionado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TransporteActivity.class);
+            intent.putExtra("transportType", "bus");
+            startActivity(intent);
+
+        });
+
+        cardWalk.setOnClickListener(v -> {
+            Toast.makeText(this, "A pie seleccionado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TransporteActivity.class);
+            intent.putExtra("transportType", "walk");
+            startActivity(intent);
+        });
 
         cardProfile.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class))
