@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.unigo">
 
     <!-- Permiso necesario para acceder a internet -->
@@ -9,8 +10,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
+        tools:replace="android:allowBackup"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
@@ -45,6 +49,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.ProfileActivity"
+            android:exported="false" />
+
+        <!-- Actividad de transporte -->
+        <activity
+            android:name=".ui.TransporteActivity"
             android:exported="false" />
 
     </application>
