@@ -31,24 +31,26 @@ android {
 dependencies {
 
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
     // Convertidor JSON con Gson
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
     // Para mostrar logs en red (opcional pero útil)
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     // API de OSM para android
-    implementation ('org.osmdroid:osmdroid-android:6.1.16'){
+    implementation ('org.osmdroid:osmdroid-android:6.1.20'){
         exclude group: 'com.j256.ormlite', module: 'ormlite-core'
     }
-    implementation ('org.osmdroid:osmdroid-wms:6.1.16'){
+    implementation ('org.osmdroid:osmdroid-wms:6.1.20'){
         exclude group: 'com.j256.ormlite', module: 'ormlite-core'
     }
-    implementation ('org.osmdroid:osmdroid-mapsforge:6.1.16'){
+    implementation ('org.osmdroid:osmdroid-mapsforge:6.1.20'){
         exclude group: 'com.j256.ormlite', module: 'ormlite-core'
     }
-    implementation ('org.osmdroid:osmdroid-geopackage:6.1.16') {
+    implementation ('org.osmdroid:osmdroid-geopackage:6.1.20') {
         exclude group: 'com.j256.ormlite', module: 'ormlite-core'
     }
+    implementation 'com.github.MKergall:osmbonuspack:6.9.0'
+
 
     implementation libs.appcompat
     implementation libs.material

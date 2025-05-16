@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.unigo.R;
 import com.google.android.material.card.MaterialCardView;
 
+
 public class MainMenuActivity extends AppCompatActivity {
 
     private MaterialCardView cardUniversity;

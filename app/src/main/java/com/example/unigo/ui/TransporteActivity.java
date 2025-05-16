@@ -4,9 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +21,23 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.unigo.R;
 
+import org.mapsforge.core.graphics.Paint;
+import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.kml.KmlDocument;
+import org.osmdroid.bonuspack.kml.KmlFeature;
+import org.osmdroid.bonuspack.kml.KmlPlacemark;
+import org.osmdroid.bonuspack.kml.Style;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
+import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
@@ -29,9 +45,18 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.wms.WMSEndpoint;
+import org.osmdroid.wms.WMSParser;
 
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import mil.nga.sf.geojson.FeatureCollection;
 
 public class TransporteActivity extends AppCompatActivity {
 
@@ -46,6 +71,9 @@ public class TransporteActivity extends AppCompatActivity {
     private Polyline currentRouteLine;
     private MyLocationNewOverlay locationOverlay;
     private ItemizedIconOverlay mMyLocationsOverlay;
+    private IMapController mMyMapController;
+    private GeoPoint upvGazteiz = new GeoPoint(42.83948958833751, -2.670196062086965);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,25 +88,70 @@ public class TransporteActivity extends AppCompatActivity {
         map = findViewById(R.id.map);
         distanciaTotalTextView = findViewById(R.id.distancia_total);
 
+        requestPermissionsIfNecessary();
+
         map.setTileSource(TileSourceFactory.MAPNIK);
-        map.getController().setZoom(16.0);
-        map.getController().setCenter(new GeoPoint(42.8467, -2.6731));
+        map.getController().setZoom(20.0);
+        map.getController().setCenter(new GeoPoint(upvGazteiz));
         map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.ALWAYS);
         map.setMultiTouchControls(true);
+
+        mMyMapController = map.getController();
 
         añadirMarcadoresUniversidad();
         inicializarPolyline();
         checkGPSYPermisos();
         añadirListeners();
-        añadirTeselas();
+
+        ImageButton mUbiImageButton = findViewById(R.id.iconUbi);
+        ImageButton mUniImageButton = findViewById(R.id.iconUni);
+        mUbiImageButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               mMyMapController.animateTo(locationOverlay.getMyLocation());
+               mMyMapController.setZoom(18.0);
+
+           }
+       });
+        mUniImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyMapController.animateTo(upvGazteiz);
+                map.getController().setZoom(17.0);
+
+            }
+        });
+
+        añadirCaminos();
         calcularRutaOptima();
 
     }
 
-    private void añadirTeselas() {
+    private void añadirCaminos() {
         switch (transportType) {
             case "bike":
-                return ;
+                String jsonString = null;
+                try {
+                    InputStream jsonStream = getAssets().open("bidegorris23.geojson");
+                    int size = jsonStream.available();
+                    byte[] buffer = new byte[size];
+                    jsonStream.read(buffer);
+                    jsonStream.close();
+                    jsonString = new String(buffer, "UTF-8");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    return;
+                }
+
+                KmlDocument kmlDocument = new KmlDocument();
+                kmlDocument.parseGeoJSON(jsonString);
+                FolderOverlay myOverLay = (FolderOverlay) kmlDocument.mKmlRoot.buildOverlay(map, null, null, kmlDocument);
+                map.getOverlays().add(myOverLay);
+                map.invalidate();
+
+                break;
+
+
             case "bus":
                 return ;
             case "tram":
@@ -91,6 +164,62 @@ public class TransporteActivity extends AppCompatActivity {
     private void calcularRutaOptima() {
         switch (transportType) {
             case "bike":
+                GeoPoint ubicacionActual = locationOverlay.getMyLocation();
+                //GeoPoint ubicacionActual = new GeoPoint(42.86464948224437, -2.6806513653849975);
+
+                if (ubicacionActual == null) {
+                    Toast.makeText(this, "Esperando ubicación GPS...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Llamada en segundo plano para no congelar la UI
+                new Thread(() -> {
+                    ArrayList<GeoPoint> waypoints = new ArrayList<>();
+                    waypoints.add(ubicacionActual);
+                    waypoints.add(upvGazteiz);
+
+                    RoadManager roadManager = new OSRMRoadManager(this, "UnigoApp/1.0");
+                    ((OSRMRoadManager) roadManager).setMean(OSRMRoadManager.MEAN_BY_BIKE);
+
+                    Road road = roadManager.getRoad(waypoints);
+
+                    // Pasos de la ruta
+                    Drawable nodeIcon = getResources().getDrawable(R.drawable.marker_node);
+                    for (int i=0; i<road.mNodes.size(); i++){
+                        RoadNode node = road.mNodes.get(i);
+                        Marker nodeMarker = new Marker(map);
+                        nodeMarker.setPosition(node.mLocation);
+                        nodeMarker.setIcon(nodeIcon);
+                        nodeMarker.setTitle("Step "+i);
+                        map.getOverlays().add(nodeMarker);
+                    }
+
+                    runOnUiThread(() -> {
+                        if (road.mStatus != Road.STATUS_OK) {
+                            Toast.makeText(this, "Error al calcular la ruta", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
+                        roadOverlay.setColor(Color.parseColor("#4CAF50"));
+                        roadOverlay.setWidth(10f);
+
+                        map.getOverlays().add(roadOverlay);
+                        map.getController().setCenter(ubicacionActual);
+                        map.getController().setZoom(16.0);
+                        map.invalidate();
+
+                        // Mostrar distancia y duración
+                        double km = road.mLength;
+                        distanciaTotalTextView.setText("Distancia total: \n" + String.format("%.2f", km) + " km");
+                        double minutos = road.mDuration / 60.0;
+                        Toast.makeText(this,
+                                String.format("Distancia: %.2f km\nDuración estimada: %.1f min", km, minutos),
+                                Toast.LENGTH_LONG).show();
+                    });
+
+                }).start();
+
                 return;
             case "bus":
                 return;
@@ -143,6 +272,23 @@ public class TransporteActivity extends AppCompatActivity {
         locationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), map);
         locationOverlay.enableMyLocation();
         locationOverlay.enableFollowLocation();
+        locationOverlay.setDrawAccuracyEnabled(true);
+        locationOverlay.runOnFirstFix(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (locationOverlay.getMyLocation() != null) {
+                            mMyMapController.animateTo(locationOverlay.getMyLocation());
+                            mMyMapController.setZoom(12.0);
+                        } else {
+                            Log.e("MainActivity", "La ubicación sigue siendo null");
+                        }
+                    }
+                });
+            }
+        });
         map.getOverlays().add(locationOverlay);
     }
 
@@ -170,8 +316,8 @@ public class TransporteActivity extends AppCompatActivity {
         MapEventsOverlay overlay = new MapEventsOverlay(new MapEventsReceiver() {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
-                añadirPuntoARuta(p);
-                return true;
+                //añadirPuntoARuta(p);
+                return false;
             }
 
             @Override
@@ -180,16 +326,12 @@ public class TransporteActivity extends AppCompatActivity {
                 distanciaTotal = 0.0;
                 distanciaTotalTextView.setText("Distancia total: 0 m");
 
-                // Limpiar marcadores y líneas, pero mantener overlays como el de ubicación
+                // Limpiar marcadores y líneas, pero mantener overlays
                 map.getOverlays().removeIf(overlay -> overlay instanceof Marker || overlay instanceof Polyline);
 
-                // Crear nueva línea vacía
-                currentRouteLine = new Polyline();
-                currentRouteLine.setColor(getColorForTransport(transportType));
-                map.getOverlays().add(currentRouteLine);
-
-                Toast.makeText(getApplicationContext(), "Ruta reiniciada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Ruta reiniciada", Toast.LENGTH_LONG).show();
                 map.invalidate();
+                calcularRutaOptima();
                 return true;
             }
         });
@@ -218,21 +360,11 @@ public class TransporteActivity extends AppCompatActivity {
     private void añadirMarcador(GeoPoint punto) {
         Marker marker = new Marker(map);
         marker.setPosition(punto);
-        int nPuntos = puntos.size()-1;
-        marker.setTitle("Punto " + nPuntos);
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         map.getOverlays().add(marker);
     }
 
     private void añadirMarcadoresUniversidad() {
-//        GeoPoint universidad = new GeoPoint(42.83961571186042, -2.670334245035063);
-//        Marker marker = new Marker(map);
-//        marker.setPosition(universidad);
-//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-//        marker.setTitle("Campus UPV/EHU");
-//        marker.setSnippet("Destino: Universidad del País Vasco");
-//        marker.setIcon(getResources().getDrawable(R.drawable.ic_school, getTheme()));
-//        map.getOverlays().add(marker);
         final ArrayList<OverlayItem> items = new ArrayList<>();
         items.add(new OverlayItem("Universidad UPV/EHU", "Edificio principal",
                 new GeoPoint(42.83961571186042, -2.670334245035063)));
@@ -245,7 +377,8 @@ public class TransporteActivity extends AppCompatActivity {
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
                     public boolean onItemSingleTapUp(int index, OverlayItem item) {
-                        return false;
+                        Toast.makeText(TransporteActivity.this, item.getTitle()+", "+ item.getSnippet(), Toast.LENGTH_SHORT).show();
+                        return true;
                     }
 
                     @Override
@@ -267,5 +400,18 @@ public class TransporteActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        map.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        map.onPause();
     }
 }

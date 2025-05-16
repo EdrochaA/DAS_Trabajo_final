@@ -8,19 +8,34 @@
     android:padding="12dp"
     tools:context=".ui.TransporteActivity">
 
-    <Button
-        android:id="@+id/buttonUni"
-        android:layout_width="130dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="17dp"
-        android:autoText="true"
-        android:text="Universidad"
+    <ImageButton
+        android:layout_width="42dp"
+        android:layout_height="41dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="38dp"
+        android:src="@drawable/ic_position"
+        android:id="@+id/iconUbi"
+        app:layout_constraintBottom_toTopOf="@+id/map"
+        app:layout_constraintEnd_toStartOf="@+id/distancia_total"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:layout_width="74dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="38dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:id="@+id/iconUni"
         app:layout_constraintBottom_toTopOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.692"
+        app:layout_constraintHorizontal_bias="0.921"
         app:layout_constraintStart_toEndOf="@+id/distancia_total"
+        app:layout_constraintStart_toStartOf="@+id/distancia_total"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.21" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <org.osmdroid.views.MapView
         android:id="@+id/map"
@@ -33,29 +48,16 @@
 
     <TextView
         android:id="@+id/distancia_total"
-        android:layout_width="84dp"
-        android:layout_height="68dp"
+        android:layout_width="157dp"
+        android:layout_height="51dp"
         android:layout_marginTop="4dp"
         android:background="#80FFFFFF"
         android:padding="8dp"
-        android:text="Distancia total: 0 m"
+        android:text="Distancia total: 0 km"
         android:textColor="#FF000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.528"
+        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonMiUbi"
-        android:layout_width="160dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="24dp"
-        android:text="Mi Ubicacion"
-        app:layout_constraintBottom_toTopOf="@+id/map"
-        app:layout_constraintEnd_toStartOf="@+id/distancia_total"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
 </androidx.constraintlayout.widget.ConstraintLayout>
