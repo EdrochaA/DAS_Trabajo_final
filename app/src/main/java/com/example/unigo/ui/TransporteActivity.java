@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,11 +23,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.unigo.R;
 
-import org.mapsforge.core.graphics.Paint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.kml.KmlDocument;
-import org.osmdroid.bonuspack.kml.KmlFeature;
-import org.osmdroid.bonuspack.kml.KmlPlacemark;
 import org.osmdroid.bonuspack.kml.Style;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
@@ -34,6 +33,7 @@ import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
@@ -42,21 +42,18 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.wms.WMSEndpoint;
-import org.osmdroid.wms.WMSParser;
 
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import mil.nga.sf.geojson.FeatureCollection;
+
 
 public class TransporteActivity extends AppCompatActivity {
 
@@ -69,6 +66,8 @@ public class TransporteActivity extends AppCompatActivity {
     private List<GeoPoint> puntos = new ArrayList<>();
     private double distanciaTotal = 0.0;
     private Polyline currentRouteLine;
+    private Polygon arabaPolygon;
+    private GeoPoint customLocation = null;
     private MyLocationNewOverlay locationOverlay;
     private ItemizedIconOverlay mMyLocationsOverlay;
     private IMapController mMyMapController;
@@ -99,7 +98,7 @@ public class TransporteActivity extends AppCompatActivity {
         mMyMapController = map.getController();
 
         añadirMarcadoresUniversidad();
-        inicializarPolyline();
+        inicializarPoly();
         checkGPSYPermisos();
         añadirListeners();
 
@@ -145,7 +144,11 @@ public class TransporteActivity extends AppCompatActivity {
 
                 KmlDocument kmlDocument = new KmlDocument();
                 kmlDocument.parseGeoJSON(jsonString);
-                FolderOverlay myOverLay = (FolderOverlay) kmlDocument.mKmlRoot.buildOverlay(map, null, null, kmlDocument);
+                // Estilo
+                Drawable defaultMarker = getResources().getDrawable(R.drawable.marker_node);
+                Bitmap defaultBitmap = ((BitmapDrawable)defaultMarker).getBitmap();
+                Style defaultStyle = new Style(defaultBitmap, getColorForTransport("bike"), 6.0f, 0xFFFFFFFF);
+                FolderOverlay myOverLay = (FolderOverlay) kmlDocument.mKmlRoot.buildOverlay(map, defaultStyle, null, kmlDocument);
                 map.getOverlays().add(myOverLay);
                 map.invalidate();
 
@@ -164,8 +167,7 @@ public class TransporteActivity extends AppCompatActivity {
     private void calcularRutaOptima() {
         switch (transportType) {
             case "bike":
-                GeoPoint ubicacionActual = locationOverlay.getMyLocation();
-                //GeoPoint ubicacionActual = new GeoPoint(42.86464948224437, -2.6806513653849975);
+                GeoPoint ubicacionActual = comprobarUbicacionActual();
 
                 if (ubicacionActual == null) {
                     Toast.makeText(this, "Esperando ubicación GPS...", Toast.LENGTH_SHORT).show();
@@ -185,11 +187,13 @@ public class TransporteActivity extends AppCompatActivity {
 
                     // Pasos de la ruta
                     Drawable nodeIcon = getResources().getDrawable(R.drawable.marker_node);
+                    Drawable firstIcon = getResources().getDrawable(R.drawable.ic_position);
                     for (int i=0; i<road.mNodes.size(); i++){
                         RoadNode node = road.mNodes.get(i);
                         Marker nodeMarker = new Marker(map);
                         nodeMarker.setPosition(node.mLocation);
                         nodeMarker.setIcon(nodeIcon);
+                        if (i == 0) {nodeMarker.setIcon(firstIcon);};
                         nodeMarker.setTitle("Step "+i);
                         map.getOverlays().add(nodeMarker);
                     }
@@ -201,7 +205,7 @@ public class TransporteActivity extends AppCompatActivity {
                         }
 
                         Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
-                        roadOverlay.setColor(Color.parseColor("#4CAF50"));
+                        roadOverlay.setColor(0x80333333);
                         roadOverlay.setWidth(10f);
 
                         map.getOverlays().add(roadOverlay);
@@ -228,6 +232,31 @@ public class TransporteActivity extends AppCompatActivity {
             case "walk":
                 return;
         }
+    }
+
+    private GeoPoint comprobarUbicacionActual() {
+        GeoPoint ubicacionActual;
+        if (!arabaPolygon.getActualPoints().contains(locationOverlay.getMyLocation())){
+            Toast.makeText(this, "Ubicacion fuera de Alava", Toast.LENGTH_SHORT).show();
+            ubicacionActual = generarPuntoAleatorioEnPolygon();
+        }
+        else {
+            ubicacionActual = locationOverlay.getMyLocation();
+        }
+        return ubicacionActual;
+    }
+
+    private GeoPoint generarPuntoAleatorioEnPolygon() {
+        BoundingBox bounds = arabaPolygon.getBounds();
+        double minLat = bounds.getLatSouth();
+        double maxLat = bounds.getLatNorth();
+        double minLon = bounds.getLonWest();
+        double maxLon = bounds.getLonEast();
+
+        double randomLat = minLat + Math.random() * (maxLat - minLat);
+        double randomLon = minLon + Math.random() * (maxLon - minLon);
+
+        return new GeoPoint(randomLat, randomLon);
     }
 
     private void checkGPSYPermisos() {
@@ -280,7 +309,12 @@ public class TransporteActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (locationOverlay.getMyLocation() != null) {
-                            mMyMapController.animateTo(locationOverlay.getMyLocation());
+                            if (!arabaPolygon.getActualPoints().contains(locationOverlay.getMyLocation())){
+                                mMyMapController.animateTo(generarPuntoAleatorioEnPolygon());
+                            }
+                            else {
+                                mMyMapController.animateTo(locationOverlay.getMyLocation());
+                            }
                             mMyMapController.setZoom(12.0);
                         } else {
                             Log.e("MainActivity", "La ubicación sigue siendo null");
@@ -292,22 +326,34 @@ public class TransporteActivity extends AppCompatActivity {
         map.getOverlays().add(locationOverlay);
     }
 
-    private void inicializarPolyline() {
-        currentRouteLine = new Polyline();
-        currentRouteLine.setColor(getColorForTransport(transportType));
-        map.getOverlays().add(currentRouteLine);
+    private void inicializarPoly() {
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        // Arriba izquierda, arriba derecha, abajo derecha, abajo izquierda,
+        geoPoints.add(new GeoPoint(42.9246189049327,-2.7645106233091723));
+        geoPoints.add(new GeoPoint(42.9246189049327,-2.5439106461168732));
+        geoPoints.add(new GeoPoint(42.81934243944316,-2.5439106461168732));
+        geoPoints.add(new GeoPoint(42.81934243944316,-2.7645106233091723));
+
+        arabaPolygon = new Polygon();
+        arabaPolygon.getFillPaint().setColor(Color.parseColor("#1EFFE70E"));
+        arabaPolygon.setPoints(geoPoints);
+        arabaPolygon.setStrokeWidth(2);
+        arabaPolygon.setStrokeColor(getColorForTransport(transportType));
+        arabaPolygon.setTitle("Araba-Gazteiz");
+
+        map.getOverlayManager().add(arabaPolygon);
     }
 
     private int getColorForTransport(String transportType) {
         switch (transportType) {
             case "bike":
-                return 0xFF4CAF50; // Verde
+                return 0xCCF44336; // Rojo
             case "bus":
-                return 0xFFF44336; // Rojo
+                return 0x804CAF50; // Verde
             case "tram":
-                return 0xFF2196F3; // Azul
+                return 0x802196F3; // Azul
             case "walk":
-                return 0xFF9C27B0; // Morado (a pie)
+                return 0x809C27B0; // Morado (a pie)
         }
         return 0x000000; // Negro
     }
@@ -316,7 +362,29 @@ public class TransporteActivity extends AppCompatActivity {
         MapEventsOverlay overlay = new MapEventsOverlay(new MapEventsReceiver() {
             @Override
             public boolean singleTapConfirmedHelper(GeoPoint p) {
-                //añadirPuntoARuta(p);
+                if (arabaPolygon.getActualPoints().contains(p)) {
+                    // Limpiar marcadores anteriores
+                    map.getOverlays().removeIf(overlay ->
+                            overlay instanceof Marker &&
+                                    "Custom Location".equals(((Marker) overlay).getTitle())
+                    );
+                    // Crear nuevo marcador
+                    Marker marker = new Marker(map);
+                    marker.setPosition(p);
+                    marker.setTitle("Custom Location");
+                    marker.setIcon(getResources().getDrawable(R.drawable.ic_position));
+                    map.getOverlays().add(marker);
+
+                    // Establecer ubicación personalizada
+                    customLocation = p;
+                    calcularRutaOptima();
+
+                    return true;
+                } else {
+                    Toast.makeText(TransporteActivity.this,
+                            "Selecciona un punto dentro de Araba-Gazteiz",
+                            Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
 
@@ -324,7 +392,7 @@ public class TransporteActivity extends AppCompatActivity {
             public boolean longPressHelper(GeoPoint p) {
                 puntos.clear();
                 distanciaTotal = 0.0;
-                distanciaTotalTextView.setText("Distancia total: 0 m");
+                distanciaTotalTextView.setText("Distancia total: 0 km");
 
                 // Limpiar marcadores y líneas, pero mantener overlays
                 map.getOverlays().removeIf(overlay -> overlay instanceof Marker || overlay instanceof Polyline);
@@ -337,31 +405,6 @@ public class TransporteActivity extends AppCompatActivity {
         });
 
         map.getOverlays().add(overlay);
-    }
-
-    private void añadirPuntoARuta(GeoPoint punto) {
-        puntos.add(punto);
-
-        // Añadir marcador
-        añadirMarcador(punto);
-
-        // Actualizar línea de ruta
-        if (puntos.size() > 1) {
-            GeoPoint anterior = puntos.get(puntos.size() - 2);
-            double distancia = anterior.distanceToAsDouble(punto);
-            distanciaTotal += distancia;
-            distanciaTotalTextView.setText(String.format("Distancia total: %.0f m", distanciaTotal));
-        }
-
-        currentRouteLine.setPoints(new ArrayList<>(puntos));
-        map.invalidate();
-    }
-
-    private void añadirMarcador(GeoPoint punto) {
-        Marker marker = new Marker(map);
-        marker.setPosition(punto);
-//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(marker);
     }
 
     private void añadirMarcadoresUniversidad() {
