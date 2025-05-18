@@ -105,13 +105,13 @@ public class TransporteActivity extends AppCompatActivity {
         ImageButton mUbiImageButton = findViewById(R.id.iconUbi);
         ImageButton mUniImageButton = findViewById(R.id.iconUni);
         mUbiImageButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               mMyMapController.animateTo(locationOverlay.getMyLocation());
-               mMyMapController.setZoom(18.0);
+            @Override
+            public void onClick(View v) {
+                mMyMapController.animateTo(locationOverlay.getMyLocation());
+                mMyMapController.setZoom(18.0);
 
-           }
-       });
+            }
+        });
         mUniImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

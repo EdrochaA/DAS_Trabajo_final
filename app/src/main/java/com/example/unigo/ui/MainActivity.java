@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Ir a LoginActivity cuando se pulsa "Acceder"
         btnAcceder.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
             startActivity(intent);
         });
 

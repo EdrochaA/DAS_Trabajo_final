@@ -56,6 +56,11 @@
             android:name=".ui.TransporteActivity"
             android:exported="false" />
 
+        <!-- Actividad de bici -->
+        <activity
+            android:name=".ui.BikeActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
