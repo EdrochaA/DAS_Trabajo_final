@@ -37,6 +37,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         cardBike.setOnClickListener(v ->
                 Toast.makeText(this, "Bicicleta seleccionada", Toast.LENGTH_SHORT).show()
+                startActivity(new Intent(this, BikeActivity.class));
         );
 
         cardTram.setOnClickListener(v ->
