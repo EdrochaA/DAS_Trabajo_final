@@ -17,9 +17,9 @@
         android:allowBackup="true"
         tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Unigo">
 
@@ -66,6 +66,11 @@
         <!-- Actividad de Universidad -->
         <activity
             android:name=".ui.UniversityActivity"
+            android:exported="false" />
+
+        <!-- Actividad de Bicicleta -->
+        <activity
+            android:name=".ui.BikeActivity"
             android:exported="false" />
 
     </application>
