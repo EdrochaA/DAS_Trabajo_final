@@ -1,55 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Fondo de estudiantes como imagen ampliada (zoom) -->
     <ImageView
         android:id="@+id/fondoEstudiantes"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/fondo_estudiantes"
-        android:adjustViewBounds="true" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Fondo con dos estudiantes" />
 
-    <!-- Logo UNIGO más grande -->
     <ImageView
         android:id="@+id/logoUnigo"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="-10dp"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        android:contentDescription="Logo de UNIGO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Texto clicable para registrarse (en el fondo, debajo del botón) -->
     <TextView
         android:id="@+id/enlaceRegistro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="¿No tienes cuenta? Regístrate"
+        android:layout_marginBottom="37dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/login_text_no_account"
         android:textColor="#2196F3"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="37dp"
-        android:clickable="true"
-        android:focusable="true" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Botón Acceder (encima del enlace) -->
     <Button
         android:id="@+id/btnAcceder"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Acceder"
-        android:textAllCaps="false"
-        android:layout_above="@id/enlaceRegistro"
-        android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="32dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="#1E88E5"
+        android:padding="12dp"
+        android:text="@string/access"
+        android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:padding="12dp" />
+        app:layout_constraintBottom_toTopOf="@id/enlaceRegistro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tvLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/language_button_selector"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:focusable="true"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/label_language"
+        android:textColor="@color/primaryBlue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

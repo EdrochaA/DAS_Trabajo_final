@@ -40,7 +40,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Usuario">
+                android:hint="@string/register_hint_name">>
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegisterUsername"
@@ -53,7 +53,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
+                android:hint="@string/register_hint_password"
                 android:layout_marginTop="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -81,7 +81,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Teléfono"
+                android:hint="@string/register_hint_phone"
                 android:layout_marginTop="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -95,7 +95,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Correo Electrónico"
+                android:hint="@string/register_hint_email"
                 android:layout_marginTop="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -110,7 +110,7 @@
                 android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Registrarse"
+                android:text="@string/register_btn_submit"
                 android:layout_marginTop="16dp"/>
 
             <!-- Volver a login -->
@@ -118,7 +118,7 @@
                 android:id="@+id/tvGoToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¿Ya tienes cuenta? Inicia sesión"
+                android:text="@string/register_text_have_account"
                 android:textColor="@color/teal_700"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
@@ -132,7 +132,7 @@
         android:id="@+id/btnVolverRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volver"
+        android:text="@string/return_main"
         android:background="@drawable/button_selector"
         android:textColor="@color/primaryBlue"
         android:layout_marginBottom="16dp"

@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.unigo.R;
 import com.example.unigo.network.ApiService;
 import com.example.unigo.network.GenericResponse;
@@ -47,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> takePictureLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(), result -> {
-                        if (result.getResultCode() == RESULT_OK && result.getData()!=null) {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                             Bitmap thumb = result.getData().getExtras().getParcelable("data");
                             imgUserIcon.setImageBitmap(thumb);
                             uploadImageToServer(thumb);
@@ -58,8 +59,12 @@ public class ProfileActivity extends AppCompatActivity {
     private final ActivityResultLauncher<String> permissionLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.RequestPermission(), granted -> {
-                        if (granted) openCamera();
-                        else Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show();
+                        if (granted) {
+                            openCamera();
+                        } else {
+                            // CORREGIDO: Usando el recurso de strings
+                            Toast.makeText(this, getString(R.string.profile_toast_camera_denied), Toast.LENGTH_SHORT).show();
+                        }
                     }
             );
 
@@ -78,19 +83,25 @@ public class ProfileActivity extends AppCompatActivity {
         cardProfileInfo  = findViewById(R.id.cardProfileInfo);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        username = prefs.getString("name", "Usuario");
+        // CORREGIDO: Usando el recurso de strings para el nombre de usuario por defecto
+        username = prefs.getString("name", getString(R.string.default_username));
         userId   = prefs.getInt("userId", -1);
-        String phone   = prefs.getString("phone", "");
-        String email   = prefs.getString("email", "");
-        String photoUrl= prefs.getString(KEY_PHOTO, "");
+        String phone    = prefs.getString("phone", "");
+        String email    = prefs.getString("email", "");
+        String photoUrl = prefs.getString(KEY_PHOTO, "");
 
         tvName.setText(username);
-        tvPhone.setText("Teléfono: " + phone);
-        tvEmail.setText("Email: "   + email);
+        // CORREGIDO: Usando las etiquetas correctas de tu strings.xml
+        tvPhone.setText(getString(R.string.profile_label_phone) + " " + phone);
+        tvEmail.setText(getString(R.string.profile_label_email) + " "   + email);
 
         if (!photoUrl.isEmpty()) {
-            Glide.with(this).load(photoUrl)
-                    .placeholder(R.drawable.usuario).into(imgUserIcon);
+            Glide.with(this)
+                    .load(photoUrl)
+                    .placeholder(R.drawable.usuario)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imgUserIcon);
         }
 
         imgUserIcon.setOnClickListener(v -> {
@@ -102,46 +113,46 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Al pulsar el CardView abrimos el diálogo de edición
         cardProfileInfo.setOnClickListener(v -> showEditDialog());
 
         btnBack.setOnClickListener(v -> finish());
         btnLogout.setOnClickListener(v -> {
             getSharedPreferences(PREFS, MODE_PRIVATE).edit().clear().apply();
             Intent i = new Intent(this, LoginActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         });
     }
 
     private void showEditDialog() {
-        // Inflar layout
-        View dialogView = LayoutInflater.from(this)
-                .inflate(R.layout.dialog_edit_profile, null);
-        TextInputEditText etName  = dialogView.findViewById(R.id.etDialogName);
-        TextInputEditText etPhone = dialogView.findViewById(R.id.etDialogPhone);
-        TextInputEditText etEmail = dialogView.findViewById(R.id.etDialogEmail);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_edit_profile, null);
 
-        // Prefill con valores actuales
-        etName.setText(tvName.getText().toString());
-        etPhone.setText(tvPhone.getText().toString().replace("Teléfono: ",""));
-        etEmail.setText(tvEmail.getText().toString().replace("Email: ",""));
+        final TextInputEditText etName = dialogView.findViewById(R.id.etDialogName);
+        final TextInputEditText etEmail = dialogView.findViewById(R.id.etDialogEmail);
+        final TextInputEditText etPhone = dialogView.findViewById(R.id.etDialogPhone);
+
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        etName.setText(prefs.getString("name", ""));
+        etEmail.setText(prefs.getString("email", ""));
+        etPhone.setText(prefs.getString("phone", ""));
 
         new AlertDialog.Builder(this)
-                .setTitle("Editar perfil")
+                .setTitle(getString(R.string.profile_dialog_title))
                 .setView(dialogView)
-                .setPositiveButton("Guardar", (d, which) -> {
-                    String newName  = etName.getText().toString().trim();
-                    String newPhone = etPhone.getText().toString().trim();
+                .setPositiveButton(getString(R.string.profile_dialog_btn_save), (dialog, which) -> {
+                    String newName = etName.getText().toString().trim();
                     String newEmail = etEmail.getText().toString().trim();
+                    String newPhone = etPhone.getText().toString().trim();
+
                     if (newName.isEmpty() || newEmail.isEmpty()) {
-                        Toast.makeText(this,
-                                "El nombre y email son obligatorios", Toast.LENGTH_SHORT).show();
+                        // CORREGIDO: Usando el recurso de strings
+                        Toast.makeText(this, getString(R.string.name_and_email_required), Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    updateProfileOnServer(newName,newPhone,newEmail);
+                    updateProfileOnServer(newName, newPhone, newEmail);
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(getString(R.string.profile_dialog_btn_cancel), null)
                 .show();
     }
 
@@ -150,33 +161,31 @@ public class ProfileActivity extends AppCompatActivity {
         Call<GenericResponse> call = api.updateProfile(userId, name, email, phone);
         call.enqueue(new Callback<GenericResponse>() {
             @Override
-            public void onResponse(Call<GenericResponse> call,
-                                   Response<GenericResponse> resp) {
-                if (resp.isSuccessful() && resp.body()!=null&&resp.body().isSuccess()) {
-                    // Guardar en prefs
-                    SharedPreferences.Editor e = getSharedPreferences(PREFS,MODE_PRIVATE).edit();
-                    e.putString("name",name);
-                    e.putString("phone",phone);
-                    e.putString("email",email);
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> resp) {
+                if (resp.isSuccessful() && resp.body() != null && resp.body().isSuccess()) {
+                    SharedPreferences.Editor e = getSharedPreferences(PREFS, MODE_PRIVATE).edit();
+                    e.putString("name", name);
+                    e.putString("phone", phone);
+                    e.putString("email", email);
                     e.apply();
-                    // Actualizar UI
+
                     tvName.setText(name);
-                    tvPhone.setText("Teléfono: "+phone);
-                    tvEmail.setText("Email: "+email);
-                    Toast.makeText(ProfileActivity.this,
-                            "Perfil actualizado", Toast.LENGTH_SHORT).show();
+                    tvPhone.setText(getString(R.string.profile_label_phone) + " " + phone);
+                    tvEmail.setText(getString(R.string.profile_label_email) + " " + email);
+
+                    Toast.makeText(ProfileActivity.this, getString(R.string.profile_toast_update_success), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(ProfileActivity.this,
-                            "Error al actualizar: "+
-                                    (resp.body()!=null?resp.body().getMessage():"Servidor"),
-                            Toast.LENGTH_LONG).show();
+                    String serverError = resp.body() != null ? resp.body().getMessage() : getString(R.string.profile_server_error);
+                    String finalMessage = getString(R.string.profile_update_error) + serverError;
+                    Toast.makeText(ProfileActivity.this, finalMessage, Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<GenericResponse> call, Throwable t) {
-                Toast.makeText(ProfileActivity.this,
-                        "Fallo de red: "+t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                // CORREGIDO: Usando recursos de strings
+                String finalMessage = getString(R.string.network_failure) + t.getMessage();
+                Toast.makeText(ProfileActivity.this, finalMessage, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -189,24 +198,30 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void uploadImageToServer(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,90,baos);
-        String b64 = Base64.encodeToString(baos.toByteArray(),Base64.DEFAULT);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        String b64 = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
         ApiService api = RetrofitClient.getInstance().create(ApiService.class);
-        api.uploadProfileImage(username,b64)
+        api.uploadProfileImage(userId, b64)
                 .enqueue(new Callback<GenericResponse>() {
                     @Override
                     public void onResponse(Call<GenericResponse> c, Response<GenericResponse> r) {
-                        if (r.isSuccessful() && r.body()!=null&&r.body().isSuccess()) {
-                            String url= r.body().getUrl();
-                            getSharedPreferences(PREFS,MODE_PRIVATE).edit()
-                                    .putString(KEY_PHOTO,url).apply();
-                            Glide.with(ProfileActivity.this).load(url)
+                        if (r.isSuccessful() && r.body() != null && r.body().isSuccess()) {
+                            String url = r.body().getUrl();
+                            getSharedPreferences(PREFS, MODE_PRIVATE).edit()
+                                    .putString(KEY_PHOTO, url)
+                                    .apply();
+                            Glide.with(ProfileActivity.this)
+                                    .load(url)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
                                     .into(imgUserIcon);
-                            Toast.makeText(ProfileActivity.this,
-                                    "Foto actualizada",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileActivity.this, getString(R.string.profile_toast_image_updated), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    @Override public void onFailure(Call<GenericResponse> c, Throwable t){}
+
+                    @Override
+                    public void onFailure(Call<GenericResponse> c, Throwable t) {
+                    }
                 });
     }
 }

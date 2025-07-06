@@ -64,15 +64,18 @@ public class LoginActivity extends AppCompatActivity {
                     showErrorDialog("Error", "No se pudo conectar al servidor.");
                     return;
                 }
+
                 LoginResponse login = resp.body();
                 if (login.isSuccess()) {
                     SharedPreferences.Editor editor =
                             getSharedPreferences("SessionPrefs", MODE_PRIVATE).edit();
+
                     editor.putBoolean("isLoggedIn", true);
                     editor.putInt("userId", login.getId());
                     editor.putString("name", login.getNombre());
                     editor.putString("email", login.getEmail());
                     editor.putString("phone", login.getTelefono());
+                    editor.putString("fotoUrl", login.getFoto());
                     editor.apply();
 
                     startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));

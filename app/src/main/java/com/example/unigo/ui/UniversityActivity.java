@@ -27,11 +27,11 @@ public class UniversityActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                R.layout.spinner_item_multiline,              // diseño collapsed
+                R.layout.spinner_item_multiline,
                 carreras
         );
         adapter.setDropDownViewResource(
-                R.layout.spinner_dropdown_multiline           // diseño dropdown
+                R.layout.spinner_dropdown_multiline
         );
         spinnerCarreras.setAdapter(adapter);
 
@@ -44,11 +44,9 @@ public class UniversityActivity extends AppCompatActivity {
                     return;
                 }
                 String seleccion = carreras[position];
-                Toast.makeText(
-                        UniversityActivity.this,
-                        "Has seleccionado: " + seleccion,
-                        Toast.LENGTH_SHORT
-                ).show();
+
+                String toastMessage = getString(R.string.university_toast_selected, seleccion);
+                Toast.makeText(UniversityActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
@@ -66,11 +64,6 @@ public class UniversityActivity extends AppCompatActivity {
 
         Button btnVolver = findViewById(R.id.btnVolverUniversity);
         btnVolver.setOnClickListener(v -> {
-            Intent backIntent = new Intent(
-                    UniversityActivity.this,
-                    MainMenuActivity.class
-            );
-            startActivity(backIntent);
             finish();
         });
     }

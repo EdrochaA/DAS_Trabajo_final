@@ -13,7 +13,7 @@
         android:id="@+id/tvTitlePerfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Perfil"
+        android:text="@string/profile_title"
         android:paddingTop="24dp"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -71,7 +71,7 @@
                         android:id="@+id/tvName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tu nombre"
+                        android:text="@string/profile_label_name"
                         android:textSize="30sp"
                         android:textStyle="bold"
                         android:textColor="@color/primaryBlue"
@@ -82,7 +82,7 @@
                         android:id="@+id/tvPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Teléfono: 000000000"
+                        android:text="@string/profile_label_phone"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         android:layout_marginBottom="8dp"/>
@@ -103,7 +103,7 @@
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cerrar sesión"
+                android:text="@string/profile_btn_logout"
                 android:layout_marginTop="40dp"/>
 
         </LinearLayout>
@@ -114,7 +114,7 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volver"
+        android:text="@string/return_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

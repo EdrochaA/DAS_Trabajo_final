@@ -21,10 +21,14 @@ public class LoginResponse {
     @SerializedName("telefono")
     private String telefono;
 
-    public boolean isSuccess()       { return success; }
-    public String getMessage()       { return message; }
-    public int getId()               { return id; }
-    public String getNombre()        { return nombre; }
-    public String getEmail()         { return email; }
-    public String getTelefono()      { return telefono; }
+    @SerializedName("foto")
+    private String foto;
+
+    public boolean isSuccess()  { return success; }
+    public String getMessage()  { return message; }
+    public int getId()          { return id; }
+    public String getNombre()   { return nombre; }
+    public String getEmail()    { return email; }
+    public String getTelefono() { return telefono; }
+    public String getFoto()     { return foto; }
 }

@@ -1,3 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Unigo</string>
+    <string name="access">Acceder</string> <string name="app_name">UniGo</string>
+    <string name="label_language">Idioma</string> <string name="menu_walk">A pie</string>
+    <string name="menu_bike">Bici</string>
+    <string name="menu_bus">Autobús</string>
+    <string name="menu_tram">Tranvía</string>
+    <string name="menu_university">Universidad</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="toast_university_selected">University selected</string>
+    <string name="toast_bike_selected">Bike selected</string>
+    <string name="toast_tram_wip">Future Implementation</string>
+    <string name="toast_bus_selected">Bus selected</string>
+    <string name="toast_walk_selected">Walking selected</string>
+    <string name="toast_profile_selected">Profile selected</string>
+
+    <string name="language_spanish">Español</string>
+    <string name="language_english">Inglés</string>
+
+    <string name="login_title">Iniciar sesión</string>
+    <string name="login_hint_username">Usuario</string>
+    <string name="login_hint_password">Contraseña</string>
+    <string name="login_btn_submit">Iniciar Sesión</string>
+    <string name="login_text_no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="return_main">Volver</string>
+
+    <string name="register_title">Registro</string>
+    <string name="register_hint_name">Nombre</string>
+    <string name="register_hint_phone">Teléfono</string>
+    <string name="register_hint_email">Correo electrónico</string>
+    <string name="register_hint_password">Contraseña</string>
+    <string name="register_btn_submit">Registrar</string>
+    <string name="register_text_have_account">¿Ya tienes cuenta? Inicia Sesión</string>
+
+    <string name="profile_title">Perfil</string>
+    <string name="profile_label_name">Nombre:</string>
+    <string name="profile_label_phone">Teléfono:</string>
+    <string name="profile_label_email">Email:</string>
+    <string name="profile_btn_edit">Editar</string>
+    <string name="profile_btn_logout">Cerrar Sesión</string>
+    <string name="profile_dialog_title">Editar Perfil</string>
+    <string name="profile_dialog_hint_name">Nuevo nombre</string>
+    <string name="profile_dialog_hint_phone">Nuevo teléfono</string>
+    <string name="profile_dialog_hint_email">Nuevo email</string>
+    <string name="profile_dialog_btn_save">Guardar</string>
+    <string name="profile_dialog_btn_cancel">Cancelar</string>
+    <string name="profile_toast_update_success">Perfil actualizado</string>
+    <string name="profile_toast_camera_denied">Permiso de cámara denegado</string>
+    <string name="profile_toast_image_updated">Foto actualizada</string>
+    <string name="default_username">Usuario</string>
+    <string name="name_and_email_required">El nombre y el email son obligatorios</string>
+    <string name="profile_update_error">Error al actualizar: </string>
+    <string name="profile_server_error">Servidor</string>
+    <string name="network_failure">Fallo de red: </string>
+
+    <string name="university_title">Universidad</string>
+    <string name="university_info_text">Selecciona tu facultad o usa el mapa para navegar.</string>
+    <string name="university_btn_map">Ver Mapa</string>
+    <string name="university_btn_list">Lista de Facultades</string>
+
+    <string name="walk_title">A pie</string>
+    <string name="walk_hint_origin">Origen</string>
+    <string name="walk_hint_destination">Destino</string>
+    <string name="walk_btn_search">Buscar Ruta</string>
+    <string name="walk_result_eta">Tiempo estimado: %1$s minutos</string>
+    <string name="getting_location">Obteniendo ubicación…</string>
+    <string name="location_not_found">No se pudo obtener la ubicación actual. Activa el GPS y reinicia.</string>
+    <string name="your_location">Tu ubicación</string>
+    <string name="campus_alava">Campus Álava</string>
+    <string name="route_calculation_error">Error al calcular la ruta. Revisa tu conexión a Internet.</string>
+    <string name="walk_route_info_format">Dist: %1$.2f km\nTiempo: %2$d min</string>
+    <string name="location_permission_denied">Permiso de ubicación denegado</string>
+
+    <string name="bike_title">Bici</string>
+    <string name="bike_hint_origin">Origen (estación bici)</string>
+    <string name="bike_hint_destination">Destino (estación bici)</string>
+    <string name="bike_btn_search">Buscar ruta</string>
+    <string name="bike_result_eta">Tiempo estimado: %1$s minutos</string>
+    <string name="gps_disabled">GPS desactivado. Actívalo y vuelve a intentarlo.</string>
+    <string name="permissions_not_granted">Permisos necesarios no concedidos</string>
+    <string name="location_not_found_gps">No se pudo obtener la ubicación actual. Activa el GPS.</string>
+    <string name="location_not_available">Ubicación no disponible</string>
+    <string name="error_calculating_bike_route">Error al calcular la ruta en bici.</string>
+    <string name="bike_total_distance_format">Distancia total:\n%.2f km</string>
+    <string name="bike_route_details_format">Distancia: %.2f km\nDuración estimada: %.1f min</string>
+    <string name="default_secure_parking">Parking seguro</string>
+    <string name="address_unknown">Dirección desconocida</string>
+    <string name="error_loading_parkings">Error al cargar los parkings seguros</string>
+    <string name="campus_upv_ehu">Campus UPV/EHU</string>
+    <string name="secure_parking_network_title">VGbiziz: Red de aparcamientos seguros para bicicletas</string>
+    <string name="bike_repair_point_title">Punto de reparación y mantenimiento de bicicletas</string>
+    <string name="memorial_bike_parking_title">Oroimenezko bizikleten aparkaleku segurua</string>
+    <string name="bidegorris_araba_title">Bidegorris Araba-Gazteiz</string>
+
+    <string name="bus_title">Autobús</string>
+    <string name="bus_hint_line">Línea de autobús</string>
+    <string name="bus_hint_stop">Parada</string>
+    <string name="bus_btn_search">Buscar parada</string>
+    <string name="bus_result_next_bus">Próximo autobús en %1$s minutos</string>
+    <string name="getting_location_route">Obteniendo ubicación y planificando ruta…</string>
+    <string name="error_loading_stops">Error: No se pudieron cargar los datos de las paradas.</string>
+    <string name="no_stops_nearby">No se encontraron paradas cercanas.</string>
+    <string name="error_no_direct_urban_route">No se encontró una ruta de bus urbano directa desde tu parada más cercana al campus.</string>
+    <string name="info_urban_route_format">Ruta Urbana Directa:\n1. Camina a la parada \'%1$s\'.\n2. Coge el bus hasta \'%2$s\'.\n3. Camina hasta el Campus.</string>
+    <string name="error_critical_data_hubs">Error crítico de datos: No se pudo encontrar la parada de Bilbao (ID 17) o Vitoria (ID 18).</string>
+    <string name="error_no_interurban_route">No se encontró una ruta de bus directa entre las estaciones.</string>
+    <string name="info_interurban_walk_from_station">Llegada a Vitoria, pero no se encontró bus urbano para llegar al campus. Debes ir a pie desde la estación.</string>
+    <string name="info_transfer_route_format">Ruta con Transbordo:\n1. Camina a \'%1$s\'.\n2. Bus interurbano a Vitoria.\n3. Camina a \'%2$s\'.\n4. Bus urbano a \'%3$s\'.\n5. Camina al Campus.</string>
+    <string name="sidepanel_stops_title">Paradas</string>
+
+    <string name="tram_title">Tranvía</string>
+    <string name="tram_hint_line">Línea de tranvía</string>
+    <string name="tram_hint_stop">Parada</string>
+    <string name="tram_btn_search">Buscar parada</string>
+    <string name="tram_result_next_tram">Próximo tranvía en %1$s minutos</string>
+
+    <string name="university_toast_selected">Has seleccionado: %1$s</string>
+
+    <string name="spinner_placeholder_select">Selecciona una opción</string>
+
+    <string name="generic_loading">Cargando...</string>
+    <string name="generic_error_network">Error de red. Comprueba tu conexión.</string>
+    <string name="generic_ok">Aceptar</string>
+    <string name="generic_cancel">Cancelar</string>
 </resources>

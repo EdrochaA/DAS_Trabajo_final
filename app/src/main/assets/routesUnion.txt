@@ -1,0 +1,12 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color,route_sort_order,continuous_pickup,continuous_drop_off
+018A,launion,018A,MARGEN IZDA-BILBAO-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+019A,launion,019A,MARGEN DCHA-BILBAO-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+1819,launion,1819,MARGEN IZDA-MARGEN DCHA\VITORIA-GASTEIZ,,3,,30609d,ffffff,,,
+3711,launion,3711,BILBAO-OTXANDIO-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+3712,launion,3712,BILBAO-UBIDEA-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+3713,launion,3713,BILBAO-MURGUIA-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+3714,launion,3714,BILBAO-AUTOPISTA-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+3717,launion,3717,VITORIA/GASTEIZ-LEIOA(UPV),,3,,30609d,ffffff,,,
+3718,launion,3718,GALLARTA-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+3719,launion,3719,ALGORTA-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,
+019U,launion,019U,MARGEN DCHA-URDULIZ-VITORIA/GASTEIZ,,3,,30609d,ffffff,,,

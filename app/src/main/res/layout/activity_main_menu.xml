@@ -34,7 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Universidad"
+                android:text="@string/menu_university"
                 android:textColor="@color/primaryBlue"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"/>
@@ -69,7 +69,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bicicleta"
+                android:text="@string/menu_bike"
                 android:textColor="@color/primaryBlue"
                 android:textSize="10sp"
                 android:layout_marginTop="2dp"/>
@@ -104,7 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tranvía"
+                android:text="@string/menu_tram"
                 android:textColor="@color/primaryBlue"
                 android:textSize="10sp"
                 android:layout_marginTop="2dp"/>
@@ -139,7 +139,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Autobús"
+                android:text="@string/menu_bus"
                 android:textColor="@color/primaryBlue"
                 android:textSize="10sp"
                 android:layout_marginTop="2dp"/>
@@ -174,7 +174,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="A pie"
+                android:text="@string/menu_walk"
                 android:textColor="@color/primaryBlue"
                 android:textSize="10sp"
                 android:layout_marginTop="2dp"/>
@@ -209,7 +209,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Perfil"
+                android:text="@string/menu_profile"
                 android:textColor="@color/primaryBlue"
                 android:textSize="10sp"
                 android:layout_marginTop="2dp"/>

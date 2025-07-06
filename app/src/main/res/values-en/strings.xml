@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="access">Enter</string>
+
+    <string name="app_name">UNIGO</string>
+    <string name="label_language">Language</string> <string name="menu_walk">Walking</string>
+    <string name="menu_bike">Bike</string>
+    <string name="menu_bus">Bus</string>
+    <string name="menu_tram">Tram</string>
+    <string name="menu_university">University</string>
+    <string name="menu_profile">Profile</string>
+    <string name="toast_university_selected">University selected</string>
+    <string name="toast_bike_selected">Bike selected</string>
+    <string name="toast_tram_wip">Future Implementation</string>
+    <string name="toast_bus_selected">Bus selected</string>
+    <string name="toast_walk_selected">Walking selected</string>
+    <string name="toast_profile_selected">Profile selected</string>
+
+    <string name="language_spanish">Spanish</string>
+    <string name="language_english">English</string>
+
+    <string name="login_title">Log In</string>
+    <string name="login_hint_username">Username</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_btn_submit">Log In</string>
+    <string name="login_text_no_account">Don´t have an account? Register</string>
+    <string name="return_main">Return</string>
+
+    <string name="register_title">Register</string>
+    <string name="register_hint_name">Name</string>
+    <string name="register_hint_phone">Phone</string>
+    <string name="register_hint_email">Email</string>
+    <string name="register_hint_password">Password</string>
+    <string name="register_btn_submit">Sign Up</string>
+    <string name="register_text_have_account">Already have an account? Log In</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="profile_label_name">Name:</string>
+    <string name="profile_label_phone">Phone:</string>
+    <string name="profile_label_email">Email:</string>
+    <string name="profile_btn_edit">Edit</string>
+    <string name="profile_btn_logout">Log Out</string>
+    <string name="profile_dialog_title">Edit Profile</string>
+    <string name="profile_dialog_hint_name">New name</string>
+    <string name="profile_dialog_hint_phone">New phone</string>
+    <string name="profile_dialog_hint_email">New email</string>
+    <string name="profile_dialog_btn_save">Save</string>
+    <string name="profile_dialog_btn_cancel">Cancel</string>
+    <string name="profile_toast_update_success">Profile updated</string>
+    <string name="profile_toast_camera_denied">Camera permission denied</string>
+    <string name="profile_toast_image_updated">Photo updated</string>
+    <string name="default_username">User</string>
+    <string name="name_and_email_required">Name and email are required</string>
+    <string name="profile_update_error">Error updating: </string>
+    <string name="profile_server_error">Server error</string>
+    <string name="network_failure">Network failure: </string>
+
+    <string name="university_title">University</string>
+    <string name="university_info_text">Select your faculty or use the map to navigate.</string>
+    <string name="university_btn_map">View Map</string>
+    <string name="university_btn_list">Faculty List</string>
+
+    <string name="walk_title">Walking</string>
+    <string name="walk_hint_origin">Origin</string>
+    <string name="walk_hint_destination">Destination</string>
+    <string name="walk_btn_search">Search Route</string>
+    <string name="walk_result_eta">Estimated time: %1$s minutes</string>
+    <string name="getting_location">Getting location…</string>
+    <string name="location_not_found">Could not get current location. Please enable GPS and restart.</string>
+    <string name="your_location">Your Location</string>
+    <string name="campus_alava">Álava Campus</string>
+    <string name="route_calculation_error">Error calculating route. Check your internet connection.</string>
+    <string name="walk_route_info_format">Dist: %1$.2f km\nTime: %2$d min</string>
+    <string name="location_permission_denied">Location permission denied</string>
+
+    <string name="bike_title">Bike</string>
+    <string name="bike_hint_origin">Origin (bike station)</string>
+    <string name="bike_hint_destination">Destination (bike station)</string>
+    <string name="bike_btn_search">Search Route</string>
+    <string name="bike_result_eta">Estimated time: %1$s minutes</string>
+    <string name="gps_disabled">GPS is disabled. Please enable it and try again.</string>
+    <string name="permissions_not_granted">Required permissions not granted</string>
+    <string name="location_not_found_gps">Could not get current location. Please enable GPS.</string>
+    <string name="location_not_available">Location not available</string>
+    <string name="error_calculating_bike_route">Error calculating bike route.</string>
+    <string name="bike_total_distance_format">Total distance:\n%.2f km</string>
+    <string name="bike_route_details_format">Distance: %.2f km\nEst. time: %.1f min</string>
+    <string name="default_secure_parking">Secure Parking</string>
+    <string name="address_unknown">Address unknown</string>
+    <string name="error_loading_parkings">Error loading secure parkings</string>
+    <string name="campus_upv_ehu">UPV/EHU Campus</string>
+    <string name="secure_parking_network_title">VGbiziz: Secure bicycle parking network</string>
+    <string name="bike_repair_point_title">Bicycle repair and maintenance point</string>
+    <string name="memorial_bike_parking_title">Memorial secure bicycle parking</string>
+    <string name="bidegorris_araba_title">Bike Lanes Araba-Gazteiz</string>
+
+    <string name="bus_title">Bus</string>
+    <string name="bus_hint_line">Bus line</string>
+    <string name="bus_hint_stop">Stop</string>
+    <string name="bus_btn_search">Find Stop</string>
+    <string name="bus_result_next_bus">Next bus in %1$s minutes</string>
+    <string name="getting_location_route">Getting location and planning route…</string>
+    <string name="error_loading_stops">Error: Stop data could not be loaded.</string>
+    <string name="no_stops_nearby">No nearby stops found.</string>
+    <string name="error_no_direct_urban_route">No direct urban bus route found from your nearest stop to the campus.</string>
+    <string name="info_urban_route_format">Direct Urban Route:\n1. Walk to stop \'%1$s\'.\n2. Take the bus to \'%2$s\'.\n3. Walk to the Campus.</string>
+    <string name="error_critical_data_hubs">Critical data error: Could not find Bilbao (ID 17) or Vitoria (ID 18) station.</string>
+    <string name="error_no_interurban_route">No direct bus route found between stations.</string>
+    <string name="info_interurban_walk_from_station">Arrived in Vitoria, but no urban bus was found to get to the campus. You must walk from the station.</string>
+    <string name="info_transfer_route_format">Route with Transfer:\n1. Walk to \'%1$s\'.\n2. Interurban bus to Vitoria.\n3. Walk to \'%2$s\'.\n4. Urban bus to \'%3$s\'.\n5. Walk to the Campus.</string>
+    <string name="sidepanel_stops_title">Stops</string>
+
+    <string name="tram_title">Tram</string>
+    <string name="tram_hint_line">Tram line</string>
+    <string name="tram_hint_stop">Stop</string>
+    <string name="tram_btn_search">Find Stop</string>
+    <string name="tram_result_next_tram">Next tram in %1$s minutes</string>
+
+    <string name="university_toast_selected">You have selected: %1$s</string>
+
+    <string name="spinner_placeholder_select">Select an option</string>
+
+    <string name="generic_loading">Loading...</string>
+    <string name="generic_error_network">Network error. Check your connection.</string>
+    <string name="generic_ok">OK</string>
+    <string name="generic_cancel">Cancel</string>
+</resources>

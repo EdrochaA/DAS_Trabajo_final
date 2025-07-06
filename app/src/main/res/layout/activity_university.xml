@@ -91,17 +91,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvUniversityAddress" />
 
-    <!-- Botón Volver (texto en blanco) -->
     <Button
         android:id="@+id/btnVolverUniversity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volver"
-        android:background="@drawable/button_selector"
-        android:textColor="@color/white"
         android:layout_marginBottom="16dp"
+        android:text="@string/return_main"
+        android:paddingHorizontal="16dp"
+
+        android:background="@drawable/language_button_selector"
+        android:textColor="@color/primaryBlue"
+        android:textStyle="bold"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

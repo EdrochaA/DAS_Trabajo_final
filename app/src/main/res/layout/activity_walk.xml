@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <org.osmdroid.views.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <!-- Botón de volver -->
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="top|start"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_arrow_back"
-        android:contentDescription="Volver"
-        android:clickable="true"
-        android:focusable="true"
-        android:elevation="8dp"/>           <!-- para que quede siempre encima -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-    <!-- Cuadro de información (distancia y tiempo) -->
-    <TextView
-        android:id="@+id/tv_info"
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/return_main"
+            android:elevation="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="#CCFFFFFF"
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:elevation="8dp"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:background="#CCFFFFFF"
-        android:padding="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
+        android:layout_gravity="center"
         android:visibility="gone"
-        android:elevation="8dp"/>
+        android:elevation="10dp"/>
 
 </FrameLayout>

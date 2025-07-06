@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="generos">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="alava_carreras">
+        <item>Double Degree in Business Administration and Management + Management Information Systems Engineering (Faculty of Economics and Business)</item>
+        <item>Double Degree in Pharmacy + Human Nutrition and Dietetics (Faculty of Pharmacy)</item>
+        <item>Double Degree in Mechanical Engineering + Business Administration and Management (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Double Degree in Mechanical Engineering + Industrial Electronics and Automation Engineering (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Degree in Business Administration and Management (BAM) (Faculty of Economics and Business. Álava Section)</item>
+        <item>Degree in Food Science and Technology (Faculty of Pharmacy)</item>
+        <item>Degree in Environmental Sciences (New Plan) (Faculty of Pharmacy)</item>
+        <item>Degree in Physical Activity and Sport Sciences (Faculty of Education and Sport)</item>
+        <item>Degree in Early Childhood Education (Faculty of Education and Sport)</item>
+        <item>Degree in Primary Education (Faculty of Education and Sport)</item>
+        <item>Degree in Primary Education (Trilingual) (Faculty of Education and Sport)</item>
+        <item>Degree in Nursing (University School of Nursing of Vitoria-Gasteiz)</item>
+        <item>Degree in English Studies (Faculty of Arts)</item>
+        <item>Degree in Basque Studies (Faculty of Arts)</item>
+        <item>Degree in Pharmacy (Faculty of Pharmacy)</item>
+        <item>Degree in Philology (Faculty of Arts)</item>
+        <item>Degree in Geography and Land Management (Faculty of Arts)</item>
+        <item>Degree in History (Faculty of Arts)</item>
+        <item>Degree in Art History (Faculty of Arts)</item>
+        <item>Degree in Industrial Electronics and Automation Engineering (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Degree in Management Information Systems Engineering (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Degree in Mechanical Engineering (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Degree in Industrial Chemical Engineering (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Degree in Automotive Engineering – DUAL (School of Engineering of Vitoria-Gasteiz)</item>
+        <item>Degree in Medicine (Teaching Unit of the Faculty of Medicine and Nursing in Vitoria-Gasteiz)</item>
+        <item>Degree in Human Nutrition and Dietetics (Faculty of Pharmacy)</item>
+        <item>Degree in Social Work (Faculty of Labour Relations and Social Work. Álava Section)</item>
+        <item>Degree in Translation and Interpreting (Faculty of Arts)</item>
+    </string-array>
+</resources>

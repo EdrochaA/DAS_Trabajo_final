@@ -41,7 +41,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Usuario">
+                android:hint="@string/login_hint_username">
+
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etUsername"
@@ -54,7 +55,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
+                android:hint="@string/login_hint_password"
                 android:layout_marginTop="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -69,7 +70,7 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Iniciar Sesión"
+                android:text="@string/login_btn_submit"
                 android:layout_marginTop="36dp"/>
 
             <!-- Enlace Registro -->
@@ -77,7 +78,7 @@
                 android:id="@+id/tvRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¿No tienes cuenta? Regístrate"
+                android:text="@string/login_text_no_account"
                 android:textColor="@color/teal_700"
                 android:textStyle="bold"
                 android:layout_marginTop="36dp"
@@ -91,7 +92,7 @@
         android:id="@+id/btnVolverLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volver"
+        android:text="@string/return_main"
         android:background="@drawable/button_selector"
         android:textColor="@color/primaryBlue"
         android:layout_marginBottom="16dp"
